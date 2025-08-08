@@ -62,10 +62,10 @@ car/
 
 ### Color Scheme
 
-The color scheme is defined through CSS variables for easy customization. Modify the variables in the `:root` selector in `assets/css/styles.css` file:
+The color scheme is defined through CSS variables for easy customization. Modify the variables in the `: root` selector in the `assets/css/styles.css` file:
 
 ```css
-:root {
+: root {
     /* Main colors */
     --primary-color: #ff4d30;  /* Change to your preferred primary color */
     --primary-hover: #df2a0c;  /* Slightly darker than primary */
@@ -95,7 +95,7 @@ Internet Explorer is not supported.
 A comprehensive documentation is included in the `documentation.html` file, which covers:
 
 - Detailed file structure explanation
-- HTML, CSS and JavaScript organization
+- HTML, CSS, and JavaScript organization
 - Customization options and examples
 - Common issues and solutions
 - And more...
