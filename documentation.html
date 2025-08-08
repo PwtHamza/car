@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBxis - Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4d30;
+            --primary-hover: #df2a0c;
+            --text-dark: #263238;
+            --text-light: #546e7a;
+            --bg-light: #f8f9fa;
+            --bg-dark: #1a1d20;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .docs-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background-color: #f8f9fa;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 20px 0;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .docs-sidebar-header {
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .docs-sidebar-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .docs-nav .nav-link {
+            padding: 10px 20px;
+            color: var(--text-dark);
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .docs-nav .nav-link.active {
+            background-color: rgba(255, 77, 48, 0.05);
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .docs-nav .nav-link:hover {
+            background-color: rgba(255, 77, 48, 0.05);
+            color: var(--primary-color);
+        }
+        
+        /* Main Content */
+        .docs-content {
+            margin-left: 280px;
+            padding: 30px;
+        }
+        
+        .docs-section {
+            padding-top: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .docs-section h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            color: var(--text-dark);
+        }
+        
+        .docs-section h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .docs-section p, .docs-section ul, .docs-section ol {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        
+        code {
+            color: var(--primary-color);
+            background-color: rgba(255, 77, 48, 0.05);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .file-structure {
+            font-family: monospace;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .file-structure .folder {
+            color: #0066cc;
+        }
+        
+        .file-structure .file {
+            color: #333;
+        }
+        
+        .file-structure ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .file-structure li {
+            position: relative;
+        }
+        
+        .file-structure li::before {
+            content: '├─ ';
+            color: #999;
+        }
+        
+        .file-structure li:last-child::before {
+            content: '└─ ';
+        }
+        
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 77, 48, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        /* Small screens */
+        @media (max-width: 991px) {
+            .docs-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                width: 260px;
+            }
+            
+            .docs-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .docs-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .toggle-sidebar {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1010;
+                background-color: var(--primary-color);
+                color: #fff;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Toggle Button -->
+    <div class="toggle-sidebar d-lg-none">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <!-- Sidebar -->    <aside class="docs-sidebar">
+        <div class="docs-sidebar-header">
+            <h3>AutoBxis Docs</h3>
+        </div>
+        <nav class="docs-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#introduction">Introduction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#file-structure">File Structure</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#color-scheme">Color Scheme</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#html-structure">HTML Structure</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#css-structure">CSS Structure</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#javascript">JavaScript</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#page-sections">Page Sections</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#customization">Customization</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#credits">Credits</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#support">Support</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="docs-content">
+        <section id="introduction" class="docs-section">            <h2>Introduction</h2>
+            <p>Welcome to the AutoBxis Car Dealership Website documentation. This guide will help you understand and customize the website according to your needs. AutoBxis is a modern, responsive car dealership website template designed to showcase vehicles, provide detailed information, and facilitate customer inquiries.</p>
+            
+            <div class="highlight">
+                <h4>Quick Start</h4>                <p>To get started with the AutoBxis website:</p>
+                <ol>
+                    <li>Upload all files to your web server</li>
+                    <li>Customize the website content in HTML files</li>
+                    <li>Modify styles in CSS files as needed</li>
+                    <li>Update JavaScript functionality if required</li>
+                </ol>
+            </div>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Responsive Design</strong> - Mobile-first approach ensuring compatibility across all devices</li>
+                <li><strong>Modern UI</strong> - Clean and professional design focused on vehicle showcasing</li>
+                <li><strong>Car & Motorcycle Listings</strong> - Dedicated pages for both car and motorcycle inventories</li>
+                <li><strong>Dynamic Components</strong> - Carousels, filters, and interactive elements</li>
+                <li><strong>WhatsApp Integration</strong> - Floating WhatsApp button for instant customer communication</li>
+                <li><strong>Bootstrap 5</strong> - Built on the latest Bootstrap framework</li>
+                <li><strong>Customizable</strong> - Easy to modify with CSS variables and modular components</li>
+                <li><strong>Cross-browser Compatible</strong> - Works on all modern browsers</li>
+            </ul>
+        </section>
+          <section id="file-structure" class="docs-section">
+            <h2>File Structure</h2>
+            <p>The AutoBxis website follows a structured organization of files and folders. Understanding this structure will help you navigate and make changes more efficiently.</p>
+            
+            <div class="file-structure">
+                <ul>
+                    <li><span class="folder">car/</span>
+                        <ul>
+                            <li><span class="file">index.html</span> - Homepage</li>
+                            <li><span class="file">about.html</span> - About us page</li>
+                            <li><span class="file">car-listing.html</span> - Car listings page</li>
+                            <li><span class="file">car-details.html</span> - Individual car details</li>
+                            <li><span class="file">bike-listing.html</span> - Motorcycle listings page</li>
+                            <li><span class="file">bike-details.html</span> - Individual bike details</li>
+                            <li><span class="file">contact.html</span> - Contact page</li>
+                            <li><span class="file">blog.html</span> - Blog listing page</li>
+                            <li><span class="file">blog-details.html</span> - Individual blog post</li>
+                            <li><span class="file">404.html</span> - Error page</li>
+                            <li><span class="file">documentation.html</span> - This documentation file</li>                            <li><span class="folder">assets/</span>
+                                <ul>
+                                    <li><span class="folder">css/</span>
+                                        <ul>
+                                            <li><span class="file">styles.css</span> - Main stylesheet</li>
+                                            <li><span class="file">whatsapp-button.css</span> - WhatsApp button styles</li>
+                                            <li><span class="file">scroll-top.css</span> - Scroll to top button styles</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="folder">js/</span>
+                                        <ul>
+                                            <li><span class="file">main.js</span> - Main JavaScript file</li>
+                                            <li><span class="file">whatsapp-button.js</span> - WhatsApp button functionality</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="folder">images/</span>
+                                        <ul>
+                                            <li>Various image files for the website</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <h3>Understanding the Structure</h3>
+            <p>The website follows a modular approach where:</p>            <ul>
+                <li>HTML files represent different pages of the website</li>
+                <li>CSS files contain the styling, with the main styles in assets/css/styles.css</li>
+                <li>JavaScript functionality is split between assets/js/main.js and component-specific files</li>
+                <li>Images are stored in the assets/images directory</li>
+            </ul>
+        </section>
+          <section id="color-scheme" class="docs-section">
+            <h2>Color Scheme</h2>
+            <p>AutoBxis uses a consistent color scheme defined through CSS variables for easy customization. These variables are defined in the <code>:root</code> selector in the <code>assets/css/styles.css</code> file.</p>
+            
+            <h3>Primary Colors</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Color</th>
+                    <th>Value</th>
+                    <th>Usage</th>
+                </tr>
+                <tr>
+                    <td><code>--primary-color</code></td>
+                    <td><span class="color-swatch" style="background-color: #ff4d30;"></span></td>
+                    <td>#ff4d30</td>
+                    <td>Primary accent color, buttons, links, highlights</td>
+                </tr>
+                <tr>
+                    <td><code>--primary-hover</code></td>
+                    <td><span class="color-swatch" style="background-color: #df2a0c;"></span></td>
+                    <td>#df2a0c</td>
+                    <td>Button hover states, active elements</td>
+                </tr>
+                <tr>
+                    <td><code>--secondary-color</code></td>
+                    <td><span class="color-swatch" style="background-color: #607d8b;"></span></td>
+                    <td>#607d8b</td>
+                    <td>Secondary elements, alternative buttons</td>
+                </tr>
+                <tr>
+                    <td><code>--white</code></td>
+                    <td><span class="color-swatch" style="background-color: #ffffff;"></span></td>
+                    <td>#ffffff</td>
+                    <td>Light backgrounds, text on dark backgrounds</td>
+                </tr>
+            </table>
+            
+            <h3>Text Colors</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Color</th>
+                    <th>Value</th>
+                    <th>Usage</th>
+                </tr>
+                <tr>
+                    <td><code>--text-dark</code></td>
+                    <td><span class="color-swatch" style="background-color: #263238;"></span></td>
+                    <td>#263238</td>
+                    <td>Main text color, headings</td>
+                </tr>
+                <tr>
+                    <td><code>--text-light</code></td>
+                    <td><span class="color-swatch" style="background-color: #546e7a;"></span></td>
+                    <td>#546e7a</td>
+                    <td>Secondary text, paragraphs</td>
+                </tr>
+                <tr>
+                    <td><code>--text-lightest</code></td>
+                    <td><span class="color-swatch" style="background-color: #78909c;"></span></td>
+                    <td>#78909c</td>
+                    <td>Tertiary text, metadata</td>
+                </tr>
+            </table>
+            
+            <h3>Background Colors</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Color</th>
+                    <th>Value</th>
+                    <th>Usage</th>
+                </tr>
+                <tr>
+                    <td><code>--bg-dark</code></td>
+                    <td><span class="color-swatch" style="background-color: #1a1d20;"></span></td>
+                    <td>#1a1d20</td>
+                    <td>Dark backgrounds, footer</td>
+                </tr>
+                <tr>
+                    <td><code>--bg-light</code></td>
+                    <td><span class="color-swatch" style="background-color: #f8f9fa;"></span></td>
+                    <td>#f8f9fa</td>
+                    <td>Light backgrounds, alternating sections</td>
+                </tr>
+                <tr>
+                    <td><code>--bg-ultra-light</code></td>
+                    <td><span class="color-swatch" style="background-color: #f5f5f5;"></span></td>
+                    <td>#f5f5f5</td>
+                    <td>Very light backgrounds, cards</td>
+                </tr>
+            </table>
+            
+            <h3>Customizing Colors</h3>
+            <p>To change the color scheme of the entire website, modify the CSS variables in the <code>:root</code> selector in <code>styles.css</code> file:</p>
+            
+            <pre><code>:root {
+    /* Main colors */
+    --primary-color: #ff4d30;  /* Change this to your preferred primary color */
+    --primary-hover: #df2a0c;  /* Adjust this to be slightly darker than primary */
+    --primary-color-rgb: 255, 77, 48; /* Update these RGB values to match your new primary color */
+    --secondary-color: #607d8b;
+    --secondary-hover: #455a64;
+    --white: #ffffff;
+    
+    /* Text colors */
+    --text-dark: #263238;
+    --text-light: #546e7a;
+    --text-lightest: #78909c;
+    
+    /* Background colors */
+    --bg-dark: #1a1d20;
+    --bg-light: #f8f9fa;
+    --bg-ultra-light: #f5f5f5;
+    /* ... other variables ... */
+}</code></pre>
+        </section>
+          <section id="html-structure" class="docs-section">
+            <h2>HTML Structure</h2>
+            <p>The AutoBxis website follows a consistent HTML structure across all pages. Understanding this structure will help you make changes and additions efficiently.</p>
+            
+            <h3>Basic Page Structure</h3>
+            <p>Each page follows this basic structure:</p>
+            
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;AutoBxis - Page Title&lt;/title&gt;
+    &lt;!-- CSS files --&gt;    &lt;link rel="stylesheet" href="assets/css/styles.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/scroll-top.css"&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Header Section --&gt;
+    &lt;header class="header"&gt;
+        &lt;!-- Top Contact Bar --&gt;
+        &lt;!-- Main Navigation --&gt;
+    &lt;/header&gt;
+    
+    &lt;!-- Page Content Sections --&gt;
+    &lt;!-- ... Various sections ... --&gt;
+    
+    &lt;!-- Footer --&gt;
+    &lt;footer class="pt-5 pb-4 bg-dark text-white"&gt;
+        &lt;!-- Footer content --&gt;
+    &lt;/footer&gt;
+    
+    &lt;!-- Scroll to top button --&gt;
+    &lt;div id="scroll-to-top-btn" class="scroll-to-top-btn"&gt;
+        &lt;i class="fas fa-arrow-up"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- JavaScript files --&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"&gt;&lt;/script&gt;    &lt;script src="assets/js/main.js"&gt;&lt;/script&gt;
+    &lt;script src="assets/js/whatsapp-button.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            
+            <h3>Header Structure</h3>
+            <p>The header consists of two main parts:</p>
+            <ol>
+                <li><strong>Top Contact Bar</strong> - Contains contact information and social media links</li>
+                <li><strong>Main Navigation</strong> - Contains the logo and navigation menu</li>
+            </ol>
+            
+            <h3>Footer Structure</h3>
+            <p>The footer includes:</p>
+            <ol>
+                <li><strong>Information Columns</strong> - About company, useful links, contact info, and popular searches</li>
+                <li><strong>Copyright Section</strong> - Copyright information and payment method assets/images</li>
+            </ol>
+            
+            <h3>Common Components</h3>
+            <p>Throughout the website, you'll find these common components:</p>
+            <ul>
+                <li><strong>Cards</strong> - Used for displaying vehicles, blog posts, and other content</li>
+                <li><strong>Buttons</strong> - Various button styles for calls to action</li>
+                <li><strong>Forms</strong> - Search forms, contact forms, etc.</li>
+                <li><strong>Modals</strong> - Quick view modals for vehicles</li>
+                <li><strong>Carousels</strong> - Sliders for showcasing vehicles and testimonials</li>
+            </ul>
+        </section>
+        
+        <section id="css-structure" class="docs-section">
+            <h2>CSS Structure</h2>
+            <p>The CSS is organized into multiple files to maintain clarity and separation of concerns:</p>
+            
+            <h3>Main Stylesheet (styles.css)</h3>
+            <p>This is the primary stylesheet that contains most of the website's styling. It's organized as follows:</p>
+            
+            <pre><code>/* CSS Variables */
+:root {
+    /* Color variables */
+    /* Typography variables */
+    /* Other variables */
+}
+
+/* General Styles */
+body { ... }
+a { ... }
+/* Other general element styles */
+
+/* Component-Specific Styles */
+.btn-primary { ... }
+.section-title { ... }
+/* Other component styles */
+
+/* Section-Specific Styles */
+.header { ... }
+.hero-slider-section { ... }
+/* Other section styles */
+
+/* Page-Specific Styles */
+.car-listing { ... }
+.car-details { ... }
+/* Other page-specific styles */
+
+/* Responsive Styles */
+@media (max-width: 991.98px) { ... }
+@media (max-width: 767.98px) { ... }
+/* Other media queries */</code></pre>
+            
+            <h3>Isolated Component Stylesheets</h3>
+            <p>Some components have their own separate CSS files to keep them isolated:</p>
+            <ul>
+                <li><strong>scroll-top.css</strong> - Styles for the scroll-to-top button</li>
+                <li><strong>whatsapp-button.css</strong> - Styles for the WhatsApp floating button</li>
+            </ul>
+            
+            <h3>CSS Naming Conventions</h3>
+            <p>The CSS follows these naming conventions:</p>
+            <ul>
+                <li><strong>Component-based classes</strong> - Classes are named according to the component they style (e.g., <code>.car-card</code>, <code>.hero-slide</code>)</li>
+                <li><strong>BEM-inspired naming</strong> - Elements within components often use a modified BEM approach (e.g., <code>.car-card</code>, <code>.car-card__image</code>)</li>
+                <li><strong>Utility classes</strong> - Some utility classes are used for common styling needs (e.g., <code>.text-accent</code>)</li>
+                <li><strong>State classes</strong> - Classes that indicate state changes (e.g., <code>.active</code>, <code>.visible</code>)</li>
+            </ul>
+            
+            <h3>CSS Variables</h3>
+            <p>CSS variables (custom properties) are used extensively to maintain consistency and make theming easier. Most important variables are declared in the <code>:root</code> selector for global accessibility.</p>
+        </section>
+        
+        <section id="javascript" class="docs-section">
+            <h2>JavaScript</h2>
+            <p>The JavaScript code is distributed across multiple files to maintain separation of concerns and isolated functionality.</p>
+            
+            <h3>Main JavaScript (main.js)</h3>
+            <p>The main.js file handles general website functionality including:</p>
+            <ul>
+                <li>Carousel initializations</li>
+                <li>Vehicle filtering</li>
+                <li>Modal functionality</li>
+                <li>Search form handling</li>
+                <li>Vehicle card interactions</li>
+            </ul>
+            
+            <h3>WhatsApp Button (whatsapp-button.js)</h3>
+            <p>This isolated script handles the WhatsApp floating button functionality:</p>
+            <ul>
+                <li>Dynamically creates the button on all pages</li>
+                <li>Handles button visibility based on scroll position</li>
+                <li>Manages animations and hover effects</li>
+                <li>Sets up the WhatsApp link with the phone number</li>
+            </ul>
+            
+            <h3>Scroll to Top Button</h3>
+            <p>The scroll-to-top functionality is implemented directly in the HTML files using an isolated script:</p>
+            
+            <pre><code>(function() {
+    // Isolated scope for scroll to top functionality
+    const scrollBtn = document.getElementById('scroll-to-top-btn');
+    
+    // Show button when user scrolls down 300px
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('visible');
+        } else {
+            scrollBtn.classList.remove('visible');
+        }
+    });
+    
+    // Smooth scroll to top when button is clicked
+    scrollBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+})(); // IIFE to avoid global scope pollution</code></pre>
+            
+            <h3>External Libraries</h3>
+            <p>The website uses these external JavaScript libraries:</p>
+            <ul>
+                <li><strong>jQuery</strong> - For DOM manipulation and other utilities</li>
+                <li><strong>Bootstrap JS</strong> - For modals, dropdowns, tabs, and other components</li>
+                <li><strong>Owl Carousel</strong> - For the various sliders and carousels</li>
+                <li><strong>Font Awesome</strong> - For icons (CSS with JS support)</li>
+            </ul>
+            
+            <h3>Adding Custom JavaScript</h3>
+            <p>To add custom JavaScript to the site:</p>
+            <ol>
+                <li>For global functionality, add it to the main.js file</li>
+                <li>For isolated functionality, create a new JS file and include it in the HTML</li>
+                <li>Use IIFEs (Immediately Invoked Function Expressions) to avoid polluting the global scope</li>
+            </ol>
+        </section>
+          <section id="page-sections" class="docs-section">
+            <h2>Page Sections</h2>
+            <p>The AutoBxis website consists of various page sections that are used across different pages. Here are the main page sections and how to use them:</p>
+            
+            <h3>Hero Section</h3>
+            <p>The hero section is the main banner at the top of the homepage and some inner pages. It uses Owl Carousel for the slider functionality.</p>
+            
+            <pre><code>&lt;section class="hero-slider-section"&gt;
+    &lt;div class="hero-slide-nav"&gt;
+        &lt;!-- Navigation dots --&gt;
+    &lt;/div&gt;
+    &lt;div class="owl-carousel hero-slider owl-theme"&gt;
+        &lt;!-- Slider items --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+            
+            <h3>Search Section</h3>
+            <p>The search section allows users to search for vehicles with various filters. It uses Bootstrap tabs for switching between different vehicle types.</p>
+            
+            <h3>About Section</h3>
+            <p>The about section provides information about the dealership with a combination of text and assets/images.</p>
+            
+            <h3>Featured Listings</h3>
+            <p>This section displays featured vehicles in a grid layout with different card sizes.</p>
+            
+            <h3>Car Types Section</h3>
+            <p>Shows different vehicle categories with circular icons and links to category pages.</p>
+            
+            <h3>Testimonials Section</h3>
+            <p>Displays customer reviews in a carousel slider.</p>
+            
+            <h3>Why Choose Us Section</h3>
+            <p>Highlights the key benefits of the dealership with icon boxes.</p>
+            
+            <h3>Footer Section</h3>
+            <p>The footer contains contact information, useful links, and other important information.</p>
+            
+            <h3>Vehicle Listing Sections</h3>
+            <p>These sections display vehicles in grid layouts with filtering options.</p>
+            
+            <h3>Vehicle Details Sections</h3>
+            <p>These sections show detailed information about a specific vehicle, including specifications, features, and assets/images.</p>
+        </section>
+          <section id="customization" class="docs-section">
+            <h2>Customization</h2>
+            <p>The AutoBxis website is designed to be easily customizable. Here are some common customization tasks:</p>
+            
+            <h3>Changing Colors</h3>
+            <p>To change the color scheme, modify the CSS variables in the <code>:root</code> selector in assets/css/styles.css:</p>
+            
+            <pre><code>:root {
+    /* Main colors */
+    --primary-color: #ff4d30;  /* Change this to your desired primary color */
+    --primary-hover: #df2a0c;  /* Slightly darker than primary */
+    /* Other color variables */
+}</code></pre>
+            
+            <h3>Changing Logo</h3>
+            <p>To change the logo, locate the logo element in the header section of each HTML file and update it:</p>
+            
+            <pre><code>&lt;a class="navbar-brand text-white" href="#"&gt;
+    &lt;h2 class="m-0"&gt;AUTOBXIS&lt;/h2&gt;
+    &lt;!-- Or use an image logo: --&gt;
+    &lt;!-- &lt;img src="assets/images/your-logo.png" alt="AutoBxis" height="40"&gt; --&gt;
+&lt;/a&gt;</code></pre>
+            
+            <h3>Changing Contact Information</h3>
+            <p>To update contact information, modify these elements in the HTML files:</p>
+            <ul>
+                <li>Top bar contact links</li>
+                <li>Contact page form and information</li>
+                <li>Footer contact section</li>
+                <li>WhatsApp button phone number in whatsapp-button.js</li>
+            </ul>
+            
+            <h3>Adding New Pages</h3>
+            <p>To add a new page:</p>
+            <ol>
+                <li>Copy an existing HTML file that is closest to your needs</li>
+                <li>Rename the file to your new page name (e.g., new-page.html)</li>
+                <li>Update the page title and content</li>
+                <li>Add links to the new page in the navigation menu</li>
+            </ol>
+            
+            <h3>Adding New Vehicle Listings</h3>
+            <p>To add new vehicle listings:</p>
+            <ol>
+                <li>Copy an existing vehicle card structure</li>
+                <li>Update the vehicle information and image</li>
+                <li>Add it to the appropriate listing section</li>
+            </ol>
+            
+            <h3>Modifying the Navigation Menu</h3>
+            <p>To modify the navigation menu, update the <code>&lt;ul class="navbar-nav ms-auto"&gt;</code> element in the header section of each HTML file.</p>
+            
+            <h3>Customizing Forms</h3>
+            <p>Forms use Bootstrap 5 form components. To customize forms, modify the HTML structure and the corresponding CSS styles.</p>
+        </section>
+          <section id="credits" class="docs-section">
+            <h2>Credits</h2>
+            <p>The AutoBxis website uses the following external resources:</p>
+            
+            <h3>Frameworks & Libraries</h3>
+            <ul>
+                <li><a href="https://getbootstrap.com/" target="_blank">Bootstrap 5</a> - Main CSS framework</li>
+                <li><a href="https://jquery.com/" target="_blank">jQuery</a> - JavaScript library</li>
+                <li><a href="https://owlcarousel2.github.io/OwlCarousel2/" target="_blank">Owl Carousel 2</a> - Carousel slider</li>
+                <li><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> - Icon library</li>
+            </ul>
+            
+            <h3>assets/images</h3>
+            <p>Vehicle and other assets/images used in the demo version are for demonstration purposes only. For a production site, replace with your own assets/images.</p>
+            
+            <h3>Fonts</h3>
+            <p>The website uses the Segoe UI font family:</p>
+            <pre><code>font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;</code></pre>
+        </section>
+          <section id="support" class="docs-section">
+            <h2>Support</h2>
+            <p>If you need further assistance with the AutoBxis website, here are some resources:</p>
+            
+            <h3>Documentation Updates</h3>
+            <p>This documentation will be updated periodically with new information and guides. Check back for the latest information.</p>
+            
+            <h3>Contact Support</h3>
+            <p>For any questions or issues not covered in this documentation, please contact support at:</p>
+            <ul>
+                <li>Email: sohail.it99@gmail.com</li>
+                <li>Phone: </li>
+            </ul>
+            
+            <h3>Common Issues</h3>
+            <p>Here are solutions to some common issues:</p>
+            
+            <h4>assets/images Not Loading</h4>
+            <p>Check that the image paths are correct and that the assets/images are in the right location.</p>
+            
+            <h4>JavaScript Functionality Not Working</h4>
+            <p>Ensure that all JavaScript files are properly included and that there are no console errors.</p>
+            
+            <h4>Responsive Layout Issues</h4>
+            <p>Use browser developer tools to inspect and troubleshoot responsive layout issues. The website uses Bootstrap breakpoints for responsive design.</p>
+              <h3>Browser Compatibility</h3>
+            <p>The AutoBxis website is designed to work on the following browsers:</p>
+            <ul>
+                <li>Google Chrome (latest version)</li>
+                <li>Mozilla Firefox (latest version)</li>
+                <li>Safari (latest version)</li>
+                <li>Microsoft Edge (latest version)</li>
+                <li>Opera (latest version)</li>
+            </ul>
+            <p>Internet Explorer is not supported.</p>
+        </section>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mobile sidebar toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.querySelector('.toggle-sidebar');
+            const sidebar = document.querySelector('.docs-sidebar');
+            
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+            }
+            
+            // Handle sidebar navigation highlighting
+            const navLinks = document.querySelectorAll('.docs-nav .nav-link');
+            const sections = document.querySelectorAll('.docs-section');
+            
+            function setActiveLink() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 100) {
+                        current = '#' + section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink();
+            
+            // Smooth scroll for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 50,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close sidebar on mobile after clicking link
+                        if (window.innerWidth < 992) {
+                            sidebar.classList.remove('show');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

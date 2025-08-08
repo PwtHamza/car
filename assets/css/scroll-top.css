@@ -1,0 +1,56 @@
+/* Isolated CSS for scroll-to-top button */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 100px; /* Positioned above the WhatsApp button */
+    right: 30px; /* Changed from left to right */
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 9999;
+}
+
+.scroll-to-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top-btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.scroll-to-top-btn i {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.scroll-to-top-btn:hover i {
+    transform: translateY(-2px);
+}
+
+/* Small screens */
+@media (max-width: 576px) {
+    .scroll-to-top-btn {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        left: 20px; /* Changed from right to left */
+    }
+    
+    .scroll-to-top-btn i {
+        font-size: 16px;
+    }
+}

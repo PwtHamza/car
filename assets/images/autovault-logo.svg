@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Car curve shape -->
+  <path d="M30,15 C60,0 100,0 130,15" stroke="#FF4D30" stroke-width="12" fill="none" stroke-linecap="round"/>
+  
+  <!-- Text -->
+  <text x="30" y="45" font-family="Arial, sans-serif" font-weight="bold" font-size="32" letter-spacing="-0.5" fill="#FF4D30">AUTO</text>
+  <text x="114" y="45" font-family="Arial, sans-serif" font-weight="bold" font-size="32" letter-spacing="-0.5" fill="#333333">VAULT</text>
+</svg>
