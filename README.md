@@ -104,7 +104,7 @@ A comprehensive documentation is included in the `documentation.html` file, whic
 
 For any questions or issues, please contact:
 
-- Email: sohail.it99@gmail.com
+- Email: mhamzah889@gmail.com
 
 ## License
 
